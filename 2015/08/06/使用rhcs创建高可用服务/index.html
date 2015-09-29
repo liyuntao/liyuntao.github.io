@@ -1,0 +1,492 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>使用rhcs创建高可用服务 | EL DORADO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="lyt">
+    
+
+    
+    <meta name="description" content="本文以adxp-agent节点为例，演示如何基于rhcs创建高可用的服务。假设读者已经搭建好rhcs环境。
+配置高可用集群：打开luci登录界面, 点击create, 创建集群
+在下面的五个选项中，“Download packages”表示在线下载并自动安装RHCS软件包，而“Use locally installed packages”表示用本地安装包进行安装。大多数情况下，RHCS组件包在集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用rhcs创建高可用服务">
+<meta property="og:url" content="http://yoursite.com/2015/08/06/使用rhcs创建高可用服务/index.html">
+<meta property="og:site_name" content="EL DORADO">
+<meta property="og:description" content="本文以adxp-agent节点为例，演示如何基于rhcs创建高可用的服务。假设读者已经搭建好rhcs环境。
+配置高可用集群：打开luci登录界面, 点击create, 创建集群
+在下面的五个选项中，“Download packages”表示在线下载并自动安装RHCS软件包，而“Use locally installed packages”表示用本地安装包进行安装。大多数情况下，RHCS组件包在集群">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-01.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-02.jpg">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-03.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-04.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-05.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-06.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-07.png">
+<meta property="og:image" content="http://yoursite.com/img/rhcs/rhcs-08.png">
+<meta property="og:updated_time" content="2015-08-07T09:36:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用rhcs创建高可用服务">
+<meta name="twitter:description" content="本文以adxp-agent节点为例，演示如何基于rhcs创建高可用的服务。假设读者已经搭建好rhcs环境。
+配置高可用集群：打开luci登录界面, 点击create, 创建集群
+在下面的五个选项中，“Download packages”表示在线下载并自动安装RHCS软件包，而“Use locally installed packages”表示用本地安装包进行安装。大多数情况下，RHCS组件包在集群">
+
+    
+    <link rel="alternative" href="/atom.xml" title="EL DORADO" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="EL DORADO" title="EL DORADO"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="EL DORADO">EL DORADO</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/06/使用rhcs创建高可用服务/" title="使用rhcs创建高可用服务" itemprop="url">使用rhcs创建高可用服务</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-06T08:12:35.000Z" itemprop="datePublished"> 发表于 2015-08-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置高可用集群："><span class="toc-number">1.</span> <span class="toc-text">配置高可用集群：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高可用性验证测试："><span class="toc-number">2.</span> <span class="toc-text">高可用性验证测试：</span></a></li></ol>
+		
+		</div>
+		
+		<p>本文以adxp-agent节点为例，演示如何基于<strong>rhcs</strong>创建高可用的服务。假设读者已经搭建好<strong>rhcs</strong>环境。</p>
+<h2 id="配置高可用集群：">配置高可用集群：</h2><p>打开luci登录界面, 点击create, 创建集群</p>
+<p>在下面的五个选项中，“Download packages”表示在线下载并自动安装RHCS软件包，而“Use locally installed packages”表示用本地安装包进行安装。大多数情况下，RHCS组件包在集群搭建时已经手动安装完成，所以这里选择本地安装。</p>
+<p>剩下两个复选框分别是启用共享存储支持（Enable Shared Storage Support）、节点加入集群时重启系统（Reboot nodes before joining cluster）这些创建cluster的设置，可选可不选，这里不做任何选择。<br><img src="/img/rhcs/rhcs-01.png" alt="新建集群界面"></p>
+<p>点击create cluster按钮完成集群配置。若创建成功，下图可以浏览集群各节点状态<br><img src="/img/rhcs/rhcs-02.jpg" alt="集群状态"></p>
+<p>进入Fence Devices页签创建 fence 设备，此处为了演示随意建一个。实际生产环境中，必须使用 fence 硬件设备。（这里根据客户的具体情况决定）<br><img src="/img/rhcs/rhcs-03.png" alt="添加Fence Device"></p>
+<blockquote>
+<p>以上属于<strong>rhcs</strong>平台搭建环节，故简述。</p>
+</blockquote>
+<p>Failover Domain是配置集群的失败转移域，通过失败转移域可以将服务和资源的切换限制在指定的节点间。<br>比如可以指定a001, a002, a003三台机器作为mysql的失败转移域。部署后若某台节点上的mysql出现不可用，就会在这几个节点之间切换。下面具体说明：</p>
+<p>下图操作将创建adxp服务的失败转移域，其参数如下：<br>? Name：创建的失败转移域名称，起一个易记的名字即可。<br>? Prioritized：是否在Failover domain 中启用域成员优先级设置，这里选择启用。<br>? Restricted:表示是否在失败转移域成员中启用服务故障切换限制。<br>? No failback：表示在这个域中使用故障切回功能，也就是说，主节点故障时，备用节点会自动接管主节点服务和资源，当主节点恢复正常时，集群的服务和资源会从备用节点自动切换到主节点。（这里保持默认：不回切）</p>
+<p>然后，在Member复选框中，选择加入此域的节点，这里选择的是n62和n61节点，然后在“priority”处设置优先级。越小优先级越高。<br>所有设置完成，点击Submit按钮。<br><img src="/img/rhcs/rhcs-04.png" alt="添加Failover Domain"></p>
+<p>Resources是集群的核心，主要包含服务脚本、IP地址、文件系统等</p>
+<ul>
+<li>对于adxp-monitor, 只需配置一项Resource即可，即monitor自身</li>
+<li>对于adxp-agent节点，需要添加agent运行过程中所需的所有服务（共三项，分别为h2数据库，aetl-server与adxp-agent应用）</li>
+</ul>
+<p>下图演示创建adxp-agent节点所需的三项Resource。首先是添加aetl资源的配置界面，其参数如下：<br>? Name：Resource名称<br>? Full Path to Script File：指向对应脚本的绝对路径，脚本已附带在产品包之中。（各个节点要将产品包部署到同一位置）<br><img src="/img/rhcs/rhcs-05.png" alt="添加Resource"></p>
+<p>除aetl之外，继续向集群中添加adxp-agent所需的h2与agent资源，如下图：<br><img src="/img/rhcs/rhcs-06.png" alt="添加Resource"></p>
+<p>最后也是最终的一步，添加服务组：<br>    新建服务组，引入刚才新建的三个资源(agent, etl, h2)在一个服务组内，可通过添加一个resource（包含两个child resource）的方式。</p>
+<p>主要配置项如下：<br>? Service Name：服务组名称，起一个易记的名字即可。<br>? Failover Domain：失败转移域，服务与资源将在此域中的节点切换。<br>? Recovery Policy: 恢复策略，主要有重启（原节点restart尝试）与重分配（切换节点）<br><img src="/img/rhcs/rhcs-07.png" alt="添加Service Group"></p>
+<p>所有服务添加完成后，如果应用程序设置正确，服务将自动启动。在Service Groups中可以看到服务组的启动状态，正常情况下，会显示当前服务运行所在节点。<br><img src="/img/rhcs/rhcs-08.png" alt="Service Group状态"></p>
+<h2 id="高可用性验证测试：">高可用性验证测试：</h2><ol>
+<li>部署完成后在一个节点A</li>
+<li>登录A节点机器，通过脚本对某服务运行stop命令或者直接kill pid</li>
+<li>观察luci是否能重新拉起应用（restart或relocate到另一机器上）</li>
+<li>另外留意：同一个服务组内，一个应用/服务的挂掉会触发组内所有应用/服务的Recovery行为</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/08/06/使用rhcs创建高可用服务/" data-title="使用rhcs创建高可用服务 | EL DORADO" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/06/04/Intellij-Idea-快捷键/"  title="Intellij IDEA入门与进阶--1: 快捷键篇">
+ <strong>下一篇：</strong><br/> 
+ <span>Intellij IDEA入门与进阶--1: 快捷键篇
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置高可用集群："><span class="toc-number">1.</span> <span class="toc-text">配置高可用集群：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高可用性验证测试："><span class="toc-number">2.</span> <span class="toc-text">高可用性验证测试：</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/blog/" title="blog">blog<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/leetcode/" title="leetcode">leetcode<sup>5</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/leetcode/" title="leetcode">leetcode<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kettle/" title="Kettle">Kettle<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/AETL/" title="AETL">AETL<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/article/" title="article">article<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/H2/" title="H2">H2<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello, This is my blog on Github. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/1951093517" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="lyt">lyt</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
