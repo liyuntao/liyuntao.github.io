@@ -96,19 +96,21 @@
         
         <p>本文翻译自Quora一则提问， 原文链接: <a href="https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka" target="_blank" rel="external">https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka</a></p>
 <p>要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。</p>
-<h2 id="1-_At_a_High_level">1. At a High level</h2><p>首先，ZooKeeper肯定是一个客户端可以链接到的服务。它提供了一个树状结构（ZooKeeper文档称之为分层命名空间），以便客户端访问。那么，我们为什么需要这棵树？当然是为了存储数据，因此这棵树被称作”data tree”. 在这棵树上，你可以做整套CRUD操作。它采用标准UNIX文件路径表示法。例如，我们使用 /A/B/C 表示C这个zNode节点的路径，其中B是C的父节点，而同理A是B的父节点。<br>下面是一个例子：</p>
+<h2 id="1-_At_a_High_level">1. At a High level</h2><p>首先，ZooKeeper肯定是一个客户端可以连接到的<strong>服务</strong>。它提供了一个树状结构（ZooKeeper文档称之为<strong>分层命名空间</strong>），以便客户端访问。那么，我们为什么需要这棵树？当然是为了存储数据，因此这棵树被称作”data tree”. 在这棵树上，你可以做整套CRUD操作。它采用标准UNIX文件路径表示法。例如，我们使用 /A/B/C 表示C这个zNode节点的路径，其中B是C的父节点，而同理A是B的父节点。<br>下面是一个例子：</p>
 <p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/01.png" alt=""></p>
 <p>这看起来很像一个UNIX文件系统对吧？下面是若干定义</p>
 <ol>
-<li>每个节点称为zNode</li>
-<li>每个zNode在树中由路径标示 </li>
-<li>zNode有两种类型 </li>
-<li>每个zNode可以存储值数据，也可以是子节点</li>
+<li>每个节点称为<strong>zNode</strong></li>
+<li>每个zNode在树中由<strong>PATH</strong>标示 </li>
+<li>zNode有两种类型 –<strong>persistent(持久节点)</strong> 和 <strong>ephemeral(临时节点)</strong></li>
+<li>每个zNode里可以存储值数据，zNode可以有子节点</li>
 <li>zNodes一旦创建不可以重命名</li>
-<li>可以在zNode上添加/删除WATCH</li>
+<li>可以在zNode上添加/删除<strong>WATCH</strong></li>
 </ol>
-<p>有人说ZooKeeper的API过于基础，应当基于它做一些封装。可以看一下由Netflix编写的Curator框架（目前已贡献给Apache），Curator替我们解决了很多问题。</p>
+<p>有人说ZooKeeper的API过于基础，应当基于它做一些Recipes封装。可以看一下由Netflix编写的Curator框架（目前已贡献给Apache），Curator替我们解决了很多问题。</p>
 <p>另外，WATCH是一个很有趣的组件，你可以为某个zNode添加WATCH，当某些事件发生的时候会得到通知。比如它可以订阅某个路径上数据的变更。</p>
+<font color="red">注: Recipe 词典的意思是食谱,配方,美食菜谱,烹饪法， 延伸用法：某项计划或步骤来取得预先给定的结果。 在计算机领域没有合适的汉语对应，如果把ZooKeeper看成菜的话，recipe就相当于菜谱， 比如麻婆豆腐， 宫保鸡丁。个人认为Recipes在这里指Leader选举、分布式锁、分布式事物等ZooKeeper常见用途的封装。</font>
+
 <h2 id="2-_One_level_deeper">2. One level deeper</h2><p>让我们看一下另一个例子，它的目的是基于键值对格式将若干配置信息保存起来，并在整个集群中可用。这些键值对应该持久化于磁盘，并且应该保证高可用、冗余和容错。而ZooKeeper正是为此而生。</p>
 <p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/02.png" alt=""></p>
 <p>如果想尝试一番，现在可以将ZooKeeper安装到本地，进入其bin目录，运行如下命令：</p>

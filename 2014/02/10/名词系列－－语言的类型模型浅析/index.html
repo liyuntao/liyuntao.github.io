@@ -4,33 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>What is the actual role of ZooKeeper in Kafka | EL DORADO</title>
+    <title>名词系列－－语言的类型模型浅析 | EL DORADO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="lyt">
     
 
     
-    <meta name="description" content="本文翻译自Quora一则提问， 原文链接: https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka
-要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。
-1. At a High level首先">
+    <meta name="description" content="我们常听到这一类名词：强类型/弱类型，静态类型/动态类型，其实它们都属于语言的类型模型这个范畴。通常来说，这些术语没有一个明确固定的结论，下面以我自身的理解一一介绍下：
+强类型和弱类型　 通常我们所说的强类型/弱类型，指强类型定义语言和弱类型定义语言
+1 强类型定义语言：强制数据类型定义的语言。也就是说，一个变量被赋值后，这个变量的类型就固定了，不能转换成另一个类型(通常只允许以不丢失信息为前提的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="What is the actual role of ZooKeeper in Kafka">
-<meta property="og:url" content="http://yoursite.com/2015/11/21/What-is-the-actual-role-of-ZooKeeper-in-Kafka/index.html">
+<meta property="og:title" content="名词系列－－语言的类型模型浅析">
+<meta property="og:url" content="http://yoursite.com/2014/02/10/名词系列－－语言的类型模型浅析/index.html">
 <meta property="og:site_name" content="EL DORADO">
-<meta property="og:description" content="本文翻译自Quora一则提问， 原文链接: https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka
-要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。
-1. At a High level首先">
-<meta property="og:image" content="http://yoursite.com/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/01.png">
-<meta property="og:image" content="http://yoursite.com/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/02.png">
-<meta property="og:image" content="http://yoursite.com/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/bash.png">
-<meta property="og:image" content="http://yoursite.com/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/03.png">
-<meta property="og:updated_time" content="2015-11-22T17:44:07.000Z">
+<meta property="og:description" content="我们常听到这一类名词：强类型/弱类型，静态类型/动态类型，其实它们都属于语言的类型模型这个范畴。通常来说，这些术语没有一个明确固定的结论，下面以我自身的理解一一介绍下：
+强类型和弱类型　 通常我们所说的强类型/弱类型，指强类型定义语言和弱类型定义语言
+1 强类型定义语言：强制数据类型定义的语言。也就是说，一个变量被赋值后，这个变量的类型就固定了，不能转换成另一个类型(通常只允许以不丢失信息为前提的">
+<meta property="og:updated_time" content="2015-11-22T10:21:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="What is the actual role of ZooKeeper in Kafka">
-<meta name="twitter:description" content="本文翻译自Quora一则提问， 原文链接: https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka
-要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。
-1. At a High level首先">
+<meta name="twitter:title" content="名词系列－－语言的类型模型浅析">
+<meta name="twitter:description" content="我们常听到这一类名词：强类型/弱类型，静态类型/动态类型，其实它们都属于语言的类型模型这个范畴。通常来说，这些术语没有一个明确固定的结论，下面以我自身的理解一一介绍下：
+强类型和弱类型　 通常我们所说的强类型/弱类型，指强类型定义语言和弱类型定义语言
+1 强类型定义语言：强制数据类型定义的语言。也就是说，一个变量被赋值后，这个变量的类型就固定了，不能转换成另一个类型(通常只允许以不丢失信息为前提的">
 
     
     <link rel="alternative" href="/atom.xml" title="EL DORADO" type="application/atom+xml">
@@ -90,14 +86,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/11/21/What-is-the-actual-role-of-ZooKeeper-in-Kafka/" title="What is the actual role of ZooKeeper in Kafka" itemprop="url">What is the actual role of ZooKeeper in Kafka</a>
+      <a href="/2014/02/10/名词系列－－语言的类型模型浅析/" title="名词系列－－语言的类型模型浅析" itemprop="url">名词系列－－语言的类型模型浅析</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
 		
   <p class="article-time">
-    <time datetime="2015-11-21T08:38:05.000Z" itemprop="datePublished"> 发表于 2015-11-21</time>
+    <time datetime="2014-02-10T10:20:27.000Z" itemprop="datePublished"> 发表于 2014-02-10</time>
     
   </p>
 </header>
@@ -106,55 +102,49 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-_At_a_High_level"><span class="toc-number">1.</span> <span class="toc-text">1. At a High level</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-_One_level_deeper"><span class="toc-number">2.</span> <span class="toc-text">2. One level deeper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-_Now_how_Kafka_uses_ZooKeeper?"><span class="toc-number">3.</span> <span class="toc-text">3. Now how Kafka uses ZooKeeper?</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#强类型和弱类型"><span class="toc-number">1.</span> <span class="toc-text">强类型和弱类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动态语言和静态语言"><span class="toc-number">2.</span> <span class="toc-text">动态语言和静态语言</span></a></li></ol>
 		
 		</div>
 		
-		<p>本文翻译自Quora一则提问， 原文链接: <a href="https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka" target="_blank" rel="external">https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka</a></p>
-<p>要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。</p>
-<h2 id="1-_At_a_High_level">1. At a High level</h2><p>首先，ZooKeeper肯定是一个客户端可以连接到的<strong>服务</strong>。它提供了一个树状结构（ZooKeeper文档称之为<strong>分层命名空间</strong>），以便客户端访问。那么，我们为什么需要这棵树？当然是为了存储数据，因此这棵树被称作”data tree”. 在这棵树上，你可以做整套CRUD操作。它采用标准UNIX文件路径表示法。例如，我们使用 /A/B/C 表示C这个zNode节点的路径，其中B是C的父节点，而同理A是B的父节点。<br>下面是一个例子：</p>
-<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/01.png" alt=""></p>
-<p>这看起来很像一个UNIX文件系统对吧？下面是若干定义</p>
+		<p>我们常听到这一类名词：强类型/弱类型，静态类型/动态类型，其实它们都属于语言的类型模型这个范畴。通常来说，这些术语没有一个明确固定的结论，下面以我自身的理解一一介绍下：</p>
+<h1 id="强类型和弱类型">强类型和弱类型</h1><p>　 通常我们所说的强类型/弱类型，指强类型定义语言和弱类型定义语言</p>
+<p>1 强类型定义语言：强制数据类型定义的语言。也就是说，一个变量被赋值后，这个变量的类型就固定了，不能转换成另一个类型(通常只允许以不丢失信息为前提的自动类型转换)。如Java/Python/Ruby</p>
+<p>举例：如果你定义了一个整型变量a,那么程序根本不可能将a当作字符串类型处理。强类型定义语言是类型安全的语言。</p>
+<p>2 弱类型定义语言：数据类型可以被忽略的语言。它与强类型定义语言相反，一个变量可以赋不同数据类型的值。如js/vbs</p>
+<p>举例：js中’’ <em> [] 会被隐式转换成 0 </em> 0，结果是 0；js中字符串’123’和整数456是可以比较大小的</p>
+<p>注意: 有一类流传的错误的说法是： “强类型语言是指需要进行变量/对象类型声明的语言，一般情况下需要编译执行”／“弱类型语言是指不需要进行变量/对象类型声明的语言，一般情况下不需要编译”</p>
+<p>其实，是否需要对变量进行类型声明跟语言的强弱类型无关。上面的错误说法实际上指向了另一个概念：变量是显示声明还是隐式暗示，注意不要混淆。</p>
+<p>这里也举个例子: c/Java中，要求对变量进行显示的声明，编写者必须以指定类型明确地关系到每一个变量上。也有些语言如Scala/Haskell支持类型推断，通过编译器帮你猜测变量的类型，从而省略了你在代码中写类型的麻烦。（不知”类型推断”这个特性算不算语法糖） 而python/ruby这类动态语言，往往使用隐式暗示的方式，给变量赋值3.14这个变量就是浮点类型，给变量赋值[1,2,3]就是数组类型。 个人觉得这个概念不必细究，大致了解即可。</p>
+<p>小结：</p>
 <ol>
-<li>每个节点称为<strong>zNode</strong></li>
-<li>每个zNode在树中由<strong>PATH</strong>标示 </li>
-<li>zNode有两种类型 –<strong>persistent(持久节点)</strong> 和 <strong>ephemeral(临时节点)</strong></li>
-<li>每个zNode里可以存储值数据，zNode可以有子节点</li>
-<li>zNodes一旦创建不可以重命名</li>
-<li>可以在zNode上添加/删除<strong>WATCH</strong></li>
+<li><p>强类型语言，由于类型检查的区别，变量会在编译期确定，或运行中动态确定。但是一旦确定便不可更改，除非使用强制转换。</p>
+</li>
+<li><p>即使在强类型语言中，也有所谓的“隐式类型转换”（自动类型转换）机制让用户在书写语法上自由一些。比如在Java中，将整数123赋值给一个double变量，并不会导致语法错误，而是会引发隐式类型转换。但即使是隐式类型转换，也如定义中括号内部分所述，通常只允许以不丢失信息为前提的自动类型转换。Java中的转换规则是，存储范围小的类型到存储范围大的类型byte→short(char)→int→long→float→double，本质上，只是将赋的值的类型在规则允许前提下向变量所具有/所定义的类型靠拢，而不会改变变量的类型。“隐式类型转换”这个操作由JVM在编译期自动完成。</p>
+</li>
 </ol>
-<p>有人说ZooKeeper的API过于基础，应当基于它做一些Recipes封装。可以看一下由Netflix编写的Curator框架（目前已贡献给Apache），Curator替我们解决了很多问题。</p>
-<p>另外，WATCH是一个很有趣的组件，你可以为某个zNode添加WATCH，当某些事件发生的时候会得到通知。比如它可以订阅某个路径上数据的变更。</p>
-<font color="red">注: Recipe 词典的意思是食谱,配方,美食菜谱,烹饪法， 延伸用法：某项计划或步骤来取得预先给定的结果。 在计算机领域没有合适的汉语对应，如果把ZooKeeper看成菜的话，recipe就相当于菜谱， 比如麻婆豆腐， 宫保鸡丁。个人认为Recipes在这里指Leader选举、分布式锁、分布式事物等ZooKeeper常见用途的封装。</font>
-
-<h2 id="2-_One_level_deeper">2. One level deeper</h2><p>让我们看一下另一个例子，它的目的是基于键值对格式将若干配置信息保存起来，并在整个集群中可用。这些键值对应该持久化于磁盘，并且应该保证高可用、冗余和容错。而ZooKeeper正是为此而生。</p>
-<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/02.png" alt=""></p>
-<p>如果想尝试一番，现在可以将ZooKeeper安装到本地，进入其bin目录，运行如下命令：</p>
-<blockquote>
-<p>zkCli.sh –server 127.0.0.1:2181</p>
-</blockquote>
-<p>你可以看到一些提示信息，最后如下：</p>
-<blockquote>
-<p>[zk: 127.0.0.1:2181(CONNECTED) 1] </p>
-</blockquote>
-<p>继续尝试如下命令：<br><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/bash.png" alt=""></p>
-<p>一旦zNode被创建，你可以使用GET或SET操作，将其当做分布式KV存储或hashmap来使用。<br>你也可以安装netflix exhibitor，它是一个基于UI的ZooKeeper管理面板，可以使用它可视化观察ZooKeeper中的数据。</p>
-<h2 id="3-_Now_how_Kafka_uses_ZooKeeper?">3. Now how Kafka uses ZooKeeper?</h2><p>Kafka于v0.8版本使用ZooKeeper保存各种配置数据，并以分布式方式在整个集群中访问。观察如下两个简单用例中，Kafka如何将数组组织于ZooKeeper</p>
+<h1 id="动态语言和静态语言">动态语言和静态语言</h1><p>　 通常我们所说的动态语言、静态语言是指动态类型语言和静态类型语言。</p>
+<p>1 动态类型语言：动态类型语言是指在运行期间才去做数据类型检查的语言。动态类型语言在编码期间，永远也不用给任何变量指定数据类型，该语言会在你第一次赋值给变量时，在内部将数据类型记录下来。Python/Ruby就是一种典型的动态类型语言。</p>
+<p>2 静态类型语言：与动态类型语言相反，它的数据类型是在编译期确定的。大多数静态类型语言要求编码时显示声明所有变量的数据类型，如前文所述的一些高级语言可以不在编码期声明，编译器会进行类型推断。Java/C++是静态类型语言的典型代表。</p>
+<p>对于动态语言与静态语言的区分，套用一句流行的话就是：Static typing where possible, dynamic typing when needed。</p>
+<p>总结:</p>
 <ol>
-<li>Topics under a broker -/brokers/topics/[topic] </li>
-<li>Next Offset for a Consumer/Topic/Partition combination - /consumers/[groupId]/offsets/[topic]/[partitionId]</li>
+<li><p>综上可知，python/ruby是强类型的动态语言, Java/C++是强类型的静态语言,JS是弱类型的动态语言</p>
+</li>
+<li><p>“静态语言/动态语言”与“强/弱类型”之间是没有必然联系的</p>
+</li>
+<li><p>强类型语言的类型系统在设计上存在更强的约束，这降低了编程的灵活性。但是强类型定义语言带来的严谨性能够有效的避免许多错误。</p>
+</li>
+<li><p>静态类型语言因为在编译期进行类型检查，可以较早发现错误，而且还可增进运行时期的性能。</p>
+</li>
+<li><p>静态语言多为编译型语言，而动态语言都是解释型语言，不管它们是不是面向对象。</p>
+</li>
 </ol>
-<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/03.png" alt=""></p>
+<p>一句话总结：弱/强类型指的是语言类型系统的类型检查的严格程度。后两者指的是变量与类型的绑定方式。 其实这些概念都是语言的类型系统在设计上的取舍。就类型来说，静态语言因为编译期的存在，在编译期间（甚至智能IDE在编码期）通过语义分析可以处理类型检查，捕获一系列错误，加快运行期的速度。而动态语言类型检查的开销往往会落在运行期，因为动态语言的灵活性(python/ruby可以在运行时把类改的面目全非，甚至绕过类型检查，静态语言惯用的语义分析在动态语言中基本无从发挥)。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Kafka/">Kafka</a><a href="/tags/ZooKeeper/">ZooKeeper</a>
-  </div>
 
 </div>
 
@@ -162,7 +152,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2015/11/21/What-is-the-actual-role-of-ZooKeeper-in-Kafka/" data-title="What is the actual role of ZooKeeper in Kafka | EL DORADO" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2014/02/10/名词系列－－语言的类型模型浅析/" data-title="名词系列－－语言的类型模型浅析 | EL DORADO" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -175,14 +165,14 @@
 	
 <nav class="article-nav clearfix">
  
-
-<div class="next">
-<a href="/2015/08/06/使用rhcs创建高可用服务/"  title="使用rhcs创建高可用服务">
- <strong>下一篇：</strong><br/> 
- <span>使用rhcs创建高可用服务
-</span>
+ <div class="prev" >
+ <a href="/2014/06/16/Hurriedly/" title="Hurriedly">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Hurriedly</span>
 </a>
 </div>
+
 
 </nav>
 
@@ -194,7 +184,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-_At_a_High_level"><span class="toc-number">1.</span> <span class="toc-text">1. At a High level</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-_One_level_deeper"><span class="toc-number">2.</span> <span class="toc-text">2. One level deeper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-_Now_how_Kafka_uses_ZooKeeper?"><span class="toc-number">3.</span> <span class="toc-text">3. Now how Kafka uses ZooKeeper?</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#强类型和弱类型"><span class="toc-number">1.</span> <span class="toc-text">强类型和弱类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#动态语言和静态语言"><span class="toc-number">2.</span> <span class="toc-text">动态语言和静态语言</span></a></li></ol>
  
   </div>
 
