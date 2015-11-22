@@ -81,6 +81,93 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2015/11/21/What-is-the-actual-role-of-ZooKeeper-in-Kafka/" title="What is the actual role of ZooKeeper in Kafka" itemprop="url">What is the actual role of ZooKeeper in Kafka</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-21T08:38:05.000Z" itemprop="datePublished"> 发表于 2015-11-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>本文翻译自Quora一则提问， 原文链接: <a href="https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka" target="_blank" rel="external">https://www.quora.com/What-is-the-actual-role-of-ZooKeeper-in-Kafka</a></p>
+<p>要理解Kafka内部是如何使用ZooKeeper，我们首先要了解ZooKeeper。下面我将尝试直观的解释ZooKeeper如何工作。我将尽我所能，避免使用技术用语，并保持简单。</p>
+<h2 id="1-_At_a_High_level">1. At a High level</h2><p>首先，ZooKeeper肯定是一个客户端可以链接到的服务。它提供了一个树状结构（ZooKeeper文档称之为分层命名空间），以便客户端访问。那么，我们为什么需要这棵树？当然是为了存储数据，因此这棵树被称作”data tree”. 在这棵树上，你可以做整套CRUD操作。它采用标准UNIX文件路径表示法。例如，我们使用 /A/B/C 表示C这个zNode节点的路径，其中B是C的父节点，而同理A是B的父节点。<br>下面是一个例子：</p>
+<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/01.png" alt=""></p>
+<p>这看起来很像一个UNIX文件系统对吧？下面是若干定义</p>
+<ol>
+<li>每个节点称为zNode</li>
+<li>每个zNode在树中由路径标示 </li>
+<li>zNode有两种类型 </li>
+<li>每个zNode可以存储值数据，也可以是子节点</li>
+<li>zNodes一旦创建不可以重命名</li>
+<li>可以在zNode上添加/删除WATCH</li>
+</ol>
+<p>有人说ZooKeeper的API过于基础，应当基于它做一些封装。可以看一下由Netflix编写的Curator框架（目前已贡献给Apache），Curator替我们解决了很多问题。</p>
+<p>另外，WATCH是一个很有趣的组件，你可以为某个zNode添加WATCH，当某些事件发生的时候会得到通知。比如它可以订阅某个路径上数据的变更。</p>
+<h2 id="2-_One_level_deeper">2. One level deeper</h2><p>让我们看一下另一个例子，它的目的是基于键值对格式将若干配置信息保存起来，并在整个集群中可用。这些键值对应该持久化于磁盘，并且应该保证高可用、冗余和容错。而ZooKeeper正是为此而生。</p>
+<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/02.png" alt=""></p>
+<p>如果想尝试一番，现在可以将ZooKeeper安装到本地，进入其bin目录，运行如下命令：</p>
+<blockquote>
+<p>zkCli.sh –server 127.0.0.1:2181</p>
+</blockquote>
+<p>你可以看到一些提示信息，最后如下：</p>
+<blockquote>
+<p>[zk: 127.0.0.1:2181(CONNECTED) 1] </p>
+</blockquote>
+<p>继续尝试如下命令：<br><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/bash.png" alt=""></p>
+<p>一旦zNode被创建，你可以使用GET或SET操作，将其当做分布式KV存储或hashmap来使用。<br>你也可以安装netflix exhibitor，它是一个基于UI的ZooKeeper管理面板，可以使用它可视化观察ZooKeeper中的数据。</p>
+<h2 id="3-_Now_how_Kafka_uses_ZooKeeper?">3. Now how Kafka uses ZooKeeper?</h2><p>Kafka于v0.8版本使用ZooKeeper保存各种配置数据，并以分布式方式在整个集群中访问。观察如下两个简单用例中，Kafka如何将数组组织于ZooKeeper</p>
+<ol>
+<li>Topics under a broker -/brokers/topics/[topic] </li>
+<li>Next Offset for a Consumer/Topic/Partition combination - /consumers/[groupId]/offsets/[topic]/[partitionId]</li>
+</ol>
+<p><img src="/img/What-is-the-actual-role-of-ZooKeeper-in-Kafka/03.png" alt=""></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Kafka/">Kafka</a><a href="/tags/ZooKeeper/">ZooKeeper</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/08/06/使用rhcs创建高可用服务/" title="使用rhcs创建高可用服务" itemprop="url">使用rhcs创建高可用服务</a>
   </h1>
   <p class="article-author">By
@@ -1051,77 +1138,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2014/06/16/LeetCode-Two-Sum/" title="LeetCode: Two Sum" itemprop="url">LeetCode: Two Sum</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
-		
-  <p class="article-time">
-    <time datetime="2014-06-16T08:29:32.000Z" itemprop="datePublished"> 发表于 2014-06-16</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
-<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
-<p>You may assume that each input would have exactly one solution.</p>
-<p><strong>Input</strong>: numbers={2, 7, 11, 15}, target=9<br><br><strong>Output</strong>: index1=1, index2=2</p>
-<hr>
-<p>直观做法是使用二重for循环，外循环遍历集合所有元素，内循环从当次被遍历元素的下一个，遍历至结尾，判断两个数sum后是否为target，耗时O(n²), 这样会超时。</p>
-<p>可以考虑使用HashMap/HashTable<integer, integer="">，使用一重for循环，以numbers[i]为key，i作为value存入，这样只需遍历Map判断key=target-numbers[i]是否存在即可</integer,></p>
-<p>两次for循环，一次插入，一次遍历判断，时间空间复杂度均为O(n)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] numbers, <span class="keyword">int</span> target) &#123;</span><br><span class="line">    Map&lt;Integer, Integer&gt; m = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();<span class="comment">// num =&gt; index</span></span><br><span class="line"></span><br><span class="line">    Integer[] result = <span class="keyword">new</span> Integer[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (target % <span class="number">2</span> == <span class="number">0</span> &amp;&amp; numbers[i] == target / <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (result[<span class="number">0</span>] == <span class="keyword">null</span>) &#123;</span><br><span class="line">                result[<span class="number">0</span>] = i + <span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                result[<span class="number">1</span>] = i + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;result[<span class="number">0</span>], result[<span class="number">1</span>]&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        m.put(numbers[i], i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : m.keySet()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (m.containsKey(target - num)) &#123;</span><br><span class="line">            <span class="keyword">int</span> a = m.get(num) + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> b = m.get(target - num) + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> a &gt; b ? <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;b, a&#125; : <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;a, b&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>在此基础上还可以进一步简化,让插入与判断可在一轮for循环内全部完成。原因如下：<br><br>题目说结果一定存在且唯一，不妨假设结果为a和b,a在前。虽然在遍历到a的时候b还不存在，但是遍历到后面的b时，a已经存在了，必然会达成判断条件map.contains(target-b)为true。代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] numbers, <span class="keyword">int</span> target) &#123;</span><br><span class="line">    <span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">    Map&lt;Integer, Integer&gt; nums = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.length; i++) &#123;</span><br><span class="line">        <span class="comment">//put number into hash table (if it's not already there)</span></span><br><span class="line">        Integer n = nums.get(numbers[i]);</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="keyword">null</span>) nums.put(numbers[i], i); <span class="comment">//subtract array element from target number</span></span><br><span class="line">        n = nums.get(target - numbers[i]);</span><br><span class="line">        <span class="keyword">if</span> (n != <span class="keyword">null</span> &amp;&amp; n &lt; i) &#123;<span class="comment">//if such number exists in the table return the indicies</span></span><br><span class="line">            a[<span class="number">0</span>] = n + <span class="number">1</span>;</span><br><span class="line">            a[<span class="number">1</span>] = i + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> a;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/algorithm/">algorithm</a><a href="/tags/leetcode/">leetcode</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -1165,6 +1181,14 @@
 		
 			
 				<li><a href="/tags/algorithm/" title="algorithm">algorithm<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ZooKeeper/" title="ZooKeeper">ZooKeeper<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kafka/" title="Kafka">Kafka<sup>1</sup></a></li>
 			
 		
 			
