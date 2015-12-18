@@ -81,6 +81,139 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2014/06/16/LeetCode-Median-of-Two-Sorted-Arrays/" title="LeetCode: Median of Two Sorted Arrays" itemprop="url">LeetCode: Median of Two Sorted Arrays</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
+		
+  <p class="article-time">
+    <time datetime="2014-06-16T10:20:31.000Z" itemprop="datePublished"> 发表于 2014-06-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>There are two sorted arrays A and B of size m and n respectively. Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).</p>
+<hr>
+<p>找到两个有序数组的中位数，LeetCode第二题，但是难度远大于第一题</p>
+<p>正常思路会想到，将两个数组归并，返回中间数。归并操作耗时O(m+n),显然达不到题目要求。<br>那么就要深挖题目中的条件。数组有序，往往会联想到二分的思路，每次排除掉一半的结果集。在这道题中，可以利用“寻找第k小的数”的思路，这样本题转化为寻找第(m+n)/2小的数：</p>
+<p>先来看下两个有序数组中，寻找第k小的数的做法:<br>不妨假设两个数组升序排列，且长度均大于k/2，则我们比较AB中第k/2个数的大小，有如下几种情况:<br></p>
+<ul>
+<li>A[k/2-1] &lt; B[k/2-1]</li>
+<li>A[k/2-1] &lt; B[k/2-1]</li>
+<li>A[k/2-1] &lt; B[k/2-1]</li>
+</ul>
+<p>当A[k/2-1] &lt; B[k/2-1]时，在AB数组归并后，A[0]至A[k/2-1]之间的数必定都在B[k/2-1]的左边，也就是说我们可以排除掉这么长一段结果集，继续在剩下的元素组成的序列中寻找第(k - k/2)大小的数。<br>由于每次排除掉k/2，也就是(m+n)/4大小的结果集，所以此方式下，时间复杂度为O(log(m+n))</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> B[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = A.length + B.length;</span><br><span class="line">    <span class="keyword">if</span> (sum % <span class="number">2</span> != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> findKth(A, <span class="number">0</span>, A.length - <span class="number">1</span>, B, <span class="number">0</span>, B.length - <span class="number">1</span>, sum / <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (findKth(A, <span class="number">0</span>, A.length - <span class="number">1</span>, B, <span class="number">0</span>, B.length - <span class="number">1</span>, sum / <span class="number">2</span>)</span><br><span class="line">                + findKth(A, <span class="number">0</span>, A.length - <span class="number">1</span>, B, <span class="number">0</span>, B.length - <span class="number">1</span>, sum / <span class="number">2</span> + <span class="number">1</span>)</span><br><span class="line">        ) / <span class="number">2.0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">findKth</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> startA, <span class="keyword">int</span> endA,</span><br><span class="line">                    <span class="keyword">int</span> B[], <span class="keyword">int</span> startB, <span class="keyword">int</span> endB,</span><br><span class="line">                    <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m = endA - startA + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> n = endB - startB + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (m &gt; n) <span class="keyword">return</span> findKth(B, startB, endB, A, startA, endA, k); <span class="comment">//只考虑a &lt;= b的情况</span></span><br><span class="line">    <span class="keyword">if</span> (m &lt; <span class="number">1</span>) <span class="keyword">return</span> B[startB + k - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (k == <span class="number">1</span>) <span class="keyword">return</span> Math.min(A[startA], B[startB]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> midA = Math.min(k / <span class="number">2</span>, m), midB = k - midA;</span><br><span class="line">    <span class="comment">//如果a的第midA大的元素比b的第midB大的元素小，</span></span><br><span class="line">    <span class="comment">//那么删掉a的前midA个元素，在剩余的数中找第k-midA大的。</span></span><br><span class="line">    <span class="keyword">if</span> (A[startA + midA - <span class="number">1</span>] &lt; B[startB + midB - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> findKth(A, startA + midA, endA, B, startB, endB, k - midA);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (A[startA + midA - <span class="number">1</span>] &gt; B[startB + midB - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> findKth(A, startA, endA, B, startB + midB, endB, k - midB);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> A[startA + midA - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/algorithm/">algorithm</a><a href="/tags/leetcode/">leetcode</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/06/16/LeetCode-Add-Two-Numbers/" title="LeetCode: Add Two Numbers" itemprop="url">LeetCode: Add Two Numbers</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="lyt" target="_blank" itemprop="author">lyt</a>
+		
+  <p class="article-time">
+    <time datetime="2014-06-16T09:57:42.000Z" itemprop="datePublished"> 发表于 2014-06-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+<p><strong>Input:</strong> (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br><br><strong>Output:</strong> 7 -&gt; 0 -&gt; 8</p>
+<p>很基础的链表操作题目，一次循环依次对节点进行加法运算即可，要注意进位与边界条件，时间复杂度O(n)</p>
+<p>为了可理解性，在我的实现中把加法与进位运算拆开分别处理了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l1 == <span class="keyword">null</span> || l2 == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> l1 == <span class="keyword">null</span> ? l2 : l1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ListNode p = <span class="keyword">new</span> ListNode(l1.val + l2.val);</span><br><span class="line">    ListNode head = p;</span><br><span class="line">    <span class="keyword">while</span> (l1.next != <span class="keyword">null</span> &amp;&amp; l2.next != <span class="keyword">null</span>) &#123; <span class="comment">// 加法操作</span></span><br><span class="line">        l1 = l1.next;</span><br><span class="line">        l2 = l2.next;</span><br><span class="line">        p.next = <span class="keyword">new</span> ListNode(l1.val + l2.val);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    l1 = l1.next;</span><br><span class="line">    l2 = l2.next;</span><br><span class="line">    p.next = l1 == <span class="keyword">null</span> ? l2 : l1;</span><br><span class="line"></span><br><span class="line">    p = head;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123; <span class="comment">// 处理进位</span></span><br><span class="line">        <span class="keyword">if</span> (p.val &gt; <span class="number">9</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (p.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">                p.next = <span class="keyword">new</span> ListNode(p.val / <span class="number">10</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                p.next.val += p.val / <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            p.val %= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/leetcode/">leetcode</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/algorithm/">algorithm</a><a href="/tags/leetcode/">leetcode</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2014/06/16/LeetCode-Two-Sum/" title="LeetCode: Two Sum" itemprop="url">LeetCode: Two Sum</a>
   </h1>
   <p class="article-author">By
