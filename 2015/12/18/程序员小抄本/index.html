@@ -12,21 +12,21 @@
 
     
     <meta name="description" content="避免重复的信息检索，纪录一些搜了又搜的命令/工具用法
-Linux查看 jdk/gradle/mysql 等等等的安装位置
-可以使用 which 命令，查看可执行文件的位置123456which java# 结果可能是符号链接，如 /usr/bin/javals -l `which java`# 输出 /usr/bin/java -&amp;gt; /System/Library/Frameworks/Ja">
+docker使用daocloud提供的加速器
+鉴于国内恶劣的网络环境，使用商业vpn代理时，docker镜像的拉取速度仍然捉急所以在docker安装完毕的同时，建议配置daocloud提供的加速器1.0（2.0版本只供daocloud云服务的主机里面使用）步骤很简单，注册，进入加速器页面，点选1.0，根据提示配置即可，网址如下https://d">
 <meta property="og:type" content="article">
 <meta property="og:title" content="程序员小抄本">
 <meta property="og:url" content="http://yoursite.com/2015/12/18/程序员小抄本/index.html">
 <meta property="og:site_name" content="EL DORADO">
 <meta property="og:description" content="避免重复的信息检索，纪录一些搜了又搜的命令/工具用法
-Linux查看 jdk/gradle/mysql 等等等的安装位置
-可以使用 which 命令，查看可执行文件的位置123456which java# 结果可能是符号链接，如 /usr/bin/javals -l `which java`# 输出 /usr/bin/java -&amp;gt; /System/Library/Frameworks/Ja">
-<meta property="og:updated_time" content="2015-12-18T14:47:54.000Z">
+docker使用daocloud提供的加速器
+鉴于国内恶劣的网络环境，使用商业vpn代理时，docker镜像的拉取速度仍然捉急所以在docker安装完毕的同时，建议配置daocloud提供的加速器1.0（2.0版本只供daocloud云服务的主机里面使用）步骤很简单，注册，进入加速器页面，点选1.0，根据提示配置即可，网址如下https://d">
+<meta property="og:updated_time" content="2016-01-10T15:16:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="程序员小抄本">
 <meta name="twitter:description" content="避免重复的信息检索，纪录一些搜了又搜的命令/工具用法
-Linux查看 jdk/gradle/mysql 等等等的安装位置
-可以使用 which 命令，查看可执行文件的位置123456which java# 结果可能是符号链接，如 /usr/bin/javals -l `which java`# 输出 /usr/bin/java -&amp;gt; /System/Library/Frameworks/Ja">
+docker使用daocloud提供的加速器
+鉴于国内恶劣的网络环境，使用商业vpn代理时，docker镜像的拉取速度仍然捉急所以在docker安装完毕的同时，建议配置daocloud提供的加速器1.0（2.0版本只供daocloud云服务的主机里面使用）步骤很简单，注册，进入加速器页面，点选1.0，根据提示配置即可，网址如下https://d">
 
     
     <link rel="alternative" href="/atom.xml" title="EL DORADO" type="application/atom+xml">
@@ -102,11 +102,15 @@ Linux查看 jdk/gradle/mysql 等等等的安装位置
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intellij_IDEA"><span class="toc-number">2.</span> <span class="toc-text">Intellij IDEA</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker"><span class="toc-number">1.</span> <span class="toc-text">docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux"><span class="toc-number">2.</span> <span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intellij_IDEA"><span class="toc-number">3.</span> <span class="toc-text">Intellij IDEA</span></a></li></ol>
 		
 		</div>
 		
 		<p>避免重复的信息检索，纪录一些搜了又搜的命令/工具用法</p>
+<h2 id="docker">docker</h2><p><strong>使用daocloud提供的加速器</strong></p>
+<p>鉴于国内恶劣的网络环境，使用商业vpn代理时，docker镜像的拉取速度仍然捉急<br>所以在docker安装完毕的同时，建议配置daocloud提供的加速器1.0（2.0版本只供daocloud云服务的主机里面使用）<br>步骤很简单，注册，进入加速器页面，点选1.0，根据提示配置即可，网址如下<br><a href="https://dashboard.daocloud.io/mirror" target="_blank" rel="external">https://dashboard.daocloud.io/mirror</a></p>
+<p><strong>mac下查看/修改docker的配置文件</strong></p>
+<p>docker-machine ssh default<br>cat(or vim) /var/lib/boot2docker/profile<br>exit</p>
 <h2 id="Linux">Linux</h2><p><strong>查看 jdk/gradle/mysql 等等等的安装位置</strong></p>
 <p>可以使用 which 命令，查看可执行文件的位置<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> java</span><br><span class="line"><span class="comment"># 结果可能是符号链接，如 /usr/bin/java</span></span><br><span class="line"></span><br><span class="line">ls <span class="operator">-l</span> `<span class="built_in">which</span> java`</span><br><span class="line"><span class="comment"># 输出 /usr/bin/java -&gt; /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java</span></span><br><span class="line"><span class="comment"># 当然如果还指向符号链接，递归执行下去即可</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="Intellij_IDEA">Intellij IDEA</h2><p><strong>右键左树发现不能创建Java的类、package等</strong></p>
@@ -174,7 +178,7 @@ Linux查看 jdk/gradle/mysql 等等等的安装位置
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux"><span class="toc-number">1.</span> <span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intellij_IDEA"><span class="toc-number">2.</span> <span class="toc-text">Intellij IDEA</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker"><span class="toc-number">1.</span> <span class="toc-text">docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux"><span class="toc-number">2.</span> <span class="toc-text">Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Intellij_IDEA"><span class="toc-number">3.</span> <span class="toc-text">Intellij IDEA</span></a></li></ol>
  
   </div>
 
@@ -290,7 +294,7 @@ Linux查看 jdk/gradle/mysql 等等等的安装位置
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
 		
 		<a href="/about" target="_blank" title="lyt">lyt</a>
 		
